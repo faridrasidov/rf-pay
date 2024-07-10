@@ -26,7 +26,7 @@ def get_devList() -> dict:
     return DevList
 
 
-def get_time() -> tuple[str, str]:
+def get_time() -> [str, str]:
     now = datetime.now()
     current_date = now.strftime("%d/%m/%Y")
     current_time = now.strftime("%H:%M:%S")
@@ -65,7 +65,7 @@ def show_output(DevName: str, CardId: str, Count: str, T1me: str, D4te: str, Pos
           f'{Post}\033[0m')
 
 
-def pay_withPost(uid: str, value: int) -> tuple[str, str]:
+def pay_withPost(uid: str, value: int) -> [str, str]:
     if baza_checkId(uid):
         snapshot = baza_getBalance(uid)
         if snapshot >= value:
