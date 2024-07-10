@@ -23,9 +23,9 @@ void loop() {
         String firstPart = data.substring(0, colonIndex);
         if (firstPart == "Dev1") {
           if (!client.connected()) {
-            if (client.connect(WIFI_ADDRESS, serverPort)) {
+            if (client.connect(SERVER_ADDRESS, SERVER_PORT)) {
               String fata = "GET " + endpoint + "?message="+ data + " HTTP/1.1\r\n" +
-                            "Host: " + WIFI_ADDRESS + "\r\n" +
+                            "Host: " + SERVER_ADDRESS + "\r\n" +
                             "Connection: close\r\n\r\n";
               client.println(fata);
               client.setTimeout(2500);
@@ -42,9 +42,9 @@ void loop() {
 
         else if (firstPart == "FIX") {
           if (!client.connected()) {
-            if (client.connect(WIFI_ADDRESS, serverPort)) {
+            if (client.connect(SERVER_ADDRESS, SERVER_PORT)) {
               String fata = "GET " + endpoint + "?message="+ data + " HTTP/1.1\r\n" +
-                            "Host: " + WIFI_ADDRESS + "\r\n" +
+                            "Host: " + SERVER_ADDRESS + "\r\n" +
                             "Connection: close\r\n\r\n";
               client.println(fata);
               client.stop();
