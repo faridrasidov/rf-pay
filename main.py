@@ -3,7 +3,6 @@ from flask import Flask, request
 import logging
 
 
-
 app = Flask(__name__)
 app.config['PROPAGATE_EXCEPTIONS'] = False
 app.config['DEBUG'] = False
@@ -12,13 +11,13 @@ log.setLevel(logging.ERROR)
 devlist = get_devList()
 
 
-@app.route('/chat', methods=['GET'])
+@app.route('/transfer', methods=['GET'])
 def chat():
     if 'message' in request.args:
         message = request.args.get('message', '')
         response = check_andPay(message)
         if response:
-            return response
+            return 'rfPayRes\n' + response
         else:
             return " "
     else:
