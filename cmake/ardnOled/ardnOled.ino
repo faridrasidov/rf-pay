@@ -25,7 +25,7 @@ void setup() {
   executeDisplay(display, 2, 30, 5, "RF-Pay");
   executeDisplay(display, 1, 20, 22, "by Farid Rashidov");
   display.display();
-  
+
   pinMode(RELAY1_PIN, OUTPUT);
   digitalWrite(RELAY1_PIN, HIGH);
 
@@ -57,6 +57,7 @@ void loop() {
     espSerial.print(machName);
     espSerial.print(":");
     espSerial.print(cardId);
+    pendingTone(SPK_Pin);
     delay(3500);
 
     incomingData = espSerial.readStringUntil('.');
@@ -71,11 +72,7 @@ void loop() {
       executeDisplay(display, 1, 20, 16, resMoney);
       display.display();
       digitalWrite(RELAY1_PIN, LOW);
-      tone(SPK_Pin, 1450);
-      delay(200);
-      noTone(SPK_Pin);
-      delay(800);
-      digitalWrite(RELAY1_PIN, HIGH);
+      successTone(SPK_Pin);
       delay(1000);
       digitalWrite(RELAY1_PIN, HIGH);
       display.clearDisplay();
@@ -89,14 +86,7 @@ void loop() {
       String resMoney = "Money : " + secondData;
       executeDisplay(display, 1, 20, 16, resMoney);
       display.display();
-      tone(SPK_Pin, 450);
-      delay(200);
-      noTone(SPK_Pin);
-      delay(200);
-      tone(SPK_Pin, 450);
-      delay(200);
-      noTone(SPK_Pin);
-      delay(1400);
+      warningTone(SPK_Pin);
       display.clearDisplay();
       rfReader.PICC_HaltA();
       rfReader.PCD_StopCrypto1();
@@ -106,14 +96,7 @@ void loop() {
       display.clearDisplay();
       executeDisplay(display, 1, 20, 0, "Not Registered");
       display.display();
-      tone(SPK_Pin, 450);
-      delay(200);
-      noTone(SPK_Pin);
-      delay(200);
-      tone(SPK_Pin, 450);
-      delay(200);
-      noTone(SPK_Pin);
-      delay(1400);
+      warningTone(SPK_Pin);
       display.clearDisplay();
       rfReader.PICC_HaltA();
       rfReader.PCD_StopCrypto1();
@@ -126,14 +109,9 @@ void loop() {
       espSerial.print(cardId);
       display.clearDisplay();
       executeDisplay(display, 1, 15, 8, "Server's Down Or");
-      // display.print(firstData);
       executeDisplay(display, 1, 15, 16, "Device Not Conn");
-      // display.print(secondData);
       display.display();
-      tone(SPK_Pin, 650);
-      delay(1000);
-      noTone(SPK_Pin);
-      delay(1000);
+      problemTone(SPK_Pin);
       display.clearDisplay();
       rfReader.PICC_HaltA();
       rfReader.PCD_StopCrypto1();

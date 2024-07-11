@@ -7,6 +7,41 @@ void executeDisplay(Adafruit_SSD1306 &display, float textSize, int cursorX, int 
     display.print(message);
 }
 
+void doTone(int speakerPin, int freq, int duration){
+  tone(speakerPin, freq);
+  delay(duration);
+}
+
+void successTone(int speakerPin){
+  doTone(speakerPin, 900, 100);
+  doTone(speakerPin, 1100, 100);
+  doTone(speakerPin, 1300, 100);
+  doTone(speakerPin, 1500, 200);
+  doTone(speakerPin, 1300, 100);
+  doTone(speakerPin, 1500, 500);
+  noTone(speakerPin);
+}
+
+void pendingTone(int speakerPin){
+  doTone(speakerPin, 1000, 300);
+  noTone(speakerPin);
+}
+
+void warningTone(int speakerPin) {
+  doTone(speakerPin, 450, 200);
+  noTone(speakerPin);
+  delay(200);
+  doTone(speakerPin, 450, 200);
+  noTone(speakerPin);
+  delay(1400);
+}
+
+void problemTone(int speakerPin) {
+   doTone(speakerPin, 650, 1000);
+   noTone(speakerPin);
+   delay(1000);
+}
+
 String getHex(byte *buffer, byte bufferSize) {
   String hexString = "";
   for (byte i = 0; i < bufferSize; i++) {
