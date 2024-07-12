@@ -70,7 +70,7 @@ def pay_withPost(uid: str, value: int) -> [str, str]:
         snapshot = baza_getBalance(uid)
         if snapshot >= value:
             snapshot -= value
-            baza_updateValue(snapshot, uid, 0)
+            baza_updateBalance(snapshot, uid, 0)
             if baza_getBalance(uid) == snapshot:
                 Post_Data = f'{SUCCESS}:{snapshot}.'
                 exitCode = SUCCESS
@@ -85,5 +85,5 @@ def pay_withPost(uid: str, value: int) -> [str, str]:
         exitCode = NOT_FOUND
 
     snapshot = baza_getBalance(uid)
-    baza_updateValue(snapshot, uid, exitCode)
+    baza_updateBalance(snapshot, uid, exitCode)
     return f'{exitCode}', Post_Data

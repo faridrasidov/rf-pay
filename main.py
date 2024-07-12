@@ -44,7 +44,7 @@ def check_andPay(datas):
                 if baza_getExitCode(cardId) == SUCCESS and get_diff(cardId):
                     last_value = baza_getBalance(cardId)
                     last_value += devlist[devName]
-                    baza_updateValue(last_value, cardId, FIX)
+                    baza_updateBalance(last_value, cardId, FIX)
                     log_write(devName, cardId, value, Tim3, Dat3, outCode)
                     show_output(devName, cardId, value, Tim3, Dat3, outCode)
                 else:

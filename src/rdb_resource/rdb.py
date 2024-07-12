@@ -40,45 +40,41 @@ def baza_getIds() -> list:
     return allIds
 
 
-def baza_getLastUpdate(uuid:str) -> str:
+def baza_get(uuid:str, getValue:str) -> any:
     conn, cur = baza_connect()
-    cur.execute(f'SELECT last_update FROM {clientsData} WHERE uuid=?', (uuid,))
+    cur.execute(f'SELECT {getValue} FROM {clientsData} WHERE uuid=?', (uuid,))
     last_update = cur.fetchall()[0][0]
     baza_commit(conn, cur)
     return last_update
 
 
+def baza_getLastUpdate(uuid:str) -> str:
+    return baza_get(uuid=uuid, getValue='last_update')
+
+
 def baza_getExitCode(uuid:str) -> int:
-    conn, cur = baza_connect()
-    cur.execute(f'SELECT last_exit_code FROM {clientsData} WHERE uuid=?', (uuid,))
-    last_exit_code = cur.fetchall()[0][0]
-    baza_commit(conn, cur)
-    return last_exit_code
+    return baza_get(uuid=uuid, getValue='last_exit_code')
 
 
 def baza_getBalance(uuid: str) -> int:
     if baza_checkId(uuid):
-        conn, cur = baza_connect()
-        cur.execute(f'SELECT balance FROM {clientsData} WHERE uuid=?', (uuid,))
-        balance = cur.fetchall()[0][0]
-        baza_commit(conn, cur)
-        return balance
+        baza_get(uuid=uuid,getValue='balance')
     else:
         return -1
 
 
-def baza_updateValue(value: int, uuid: str, exitCode: int) -> None:
+def baza_updateBalance(balance: int, uuid: str, exitCode: int) -> None:
     currentTime = datetime.now()
     currentTime = currentTime.strftime('%Y-%m-%d %H:%M:%S')
     conn, cur = baza_connect()
     if not exitCode:
-        cur.execute(f'UPDATE {clientsData} SET balance = ? WHERE uuid = ?', (value, uuid))
+        cur.execute(f'UPDATE {clientsData} SET balance = ? WHERE uuid = ?', (balance, uuid))
     else:
         cur.execute(f'''UPDATE {clientsData} 
                         SET balance = ?, 
                         last_exit_code = ?, 
                         last_update = ? 
-                        WHERE uuid = ?''', (value, exitCode, currentTime, uuid))
+                        WHERE uuid = ?''', (balance, exitCode, currentTime, uuid))
     baza_commit(conn, cur)
 
 
@@ -91,14 +87,14 @@ def baza_checkId(uuid: str) -> bool:
         return False
 
 
-def baza_register(uid: str) -> str:
-    if baza_checkId(uid):
+def baza_register(uuid: str) -> str:
+    if baza_checkId(uuid):
         return "Already Registered"
     else:
         conn, cur = baza_connect()
-        cur.execute(f'INSERT INTO {clientsData} (uuid, balance) VALUES (\'%s\',\'%s\')' % (uid, 0))
+        cur.execute(f'INSERT INTO {clientsData} (uuid, balance) VALUES (\'%s\',\'%s\')' % (uuid, 0))
         baza_commit(conn, cur)
-        if baza_checkId(uid):
+        if baza_checkId(uuid):
             return "Registered Successfully"
         else:
             return "Try Again"
