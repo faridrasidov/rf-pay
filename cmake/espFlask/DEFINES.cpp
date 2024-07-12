@@ -5,8 +5,10 @@ const char* WIFI_PASSWORD = "WIFI_PASSWORD";
 const char* SERVER_ADDRESS = "SERVER_ADDRESS"; // domain also supported
 const int SERVER_PORT = 51511;
 const String SERVER_API = "/transfer";
+const int HTTPS_PORT[] = {443, 2053, 2083, 2087, 2096, 8443};
+const int HTTPS_PORTS = sizeof(HTTPS_PORT) / sizeof(HTTPS_PORT[0]);
 
-void sendRequest(WiFiClientSecure &client, const String& data, bool notFix) {
+void sendRequest(WiFiClient &client, const String& data, bool notFix) {
   if (!client.connected() && client.connect(SERVER_ADDRESS, SERVER_PORT)) {
     String request = "GET " + SERVER_API + "?message=" + data + " HTTP/1.1\r\n" +
                      "Host: " + SERVER_ADDRESS + "\r\n" +
