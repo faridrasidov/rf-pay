@@ -58,7 +58,7 @@ def baza_getExitCode(uuid:str) -> int:
 
 def baza_getBalance(uuid: str) -> int:
     if baza_checkId(uuid):
-        baza_get(uuid=uuid,getValue='balance')
+        return baza_get(uuid=uuid, getValue='balance')
     else:
         return -1
 
